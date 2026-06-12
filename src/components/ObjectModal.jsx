@@ -42,10 +42,18 @@ export default function ObjectModal({ object, onClose }) {
 
   useEffect(() => {
     document.addEventListener('keydown', handleKey)
-    document.body.style.overflow = 'hidden'
+    const scrollY = window.scrollY
+    document.body.dataset.scrollY = String(scrollY)
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
     return () => {
       document.removeEventListener('keydown', handleKey)
-      document.body.style.overflow = ''
+      const y = parseInt(document.body.dataset.scrollY || '0')
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      window.scrollTo(0, y)
     }
   }, [handleKey])
 
@@ -56,11 +64,14 @@ export default function ObjectModal({ object, onClose }) {
   return (
     <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div className="modal" onClick={e => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Lukk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M18 6 6 18M6 6l12 12" />
-          </svg>
-        </button>
+        {/* Top bar: zero-height on desktop (close btn floats), sticky header on mobile */}
+        <div className="modal-top-bar">
+          <button className="modal-close" onClick={onClose} aria-label="Lukk">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
 
         <div className="modal-layout">
           {/* ── Image panel ──────────────────────────────────────────────── */}

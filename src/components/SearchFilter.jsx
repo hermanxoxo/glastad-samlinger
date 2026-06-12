@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './SearchFilter.css'
 
 const SORT_OPTIONS = [
@@ -27,6 +28,7 @@ export default function SearchFilter({
   options,
   total, shown,
 }) {
+  const [panelOpen, setPanelOpen] = useState(false)
   const activeFilters = Object.entries(filters).filter(([, v]) => v).length
 
   function handleFilter(key, value) {
@@ -63,6 +65,7 @@ export default function SearchFilter({
             )}
           </div>
 
+          {/* Desktop: sort inline in top row */}
           <div className="sf-sort-wrap">
             <label className="sf-sort-label">Sorter</label>
             <select
@@ -75,29 +78,68 @@ export default function SearchFilter({
               ))}
             </select>
           </div>
+
+          {/* Mobile: accordion toggle button */}
+          <button
+            className={`sf-toggle-btn${panelOpen ? ' sf-toggle-btn--open' : ''}`}
+            onClick={() => setPanelOpen(v => !v)}
+            aria-expanded={panelOpen}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="8" y1="12" x2="21" y2="12"/>
+              <line x1="13" y1="18" x2="21" y2="18"/>
+            </svg>
+            <span>Filtrer og sorter</span>
+            {activeFilters > 0 && (
+              <span className="sf-toggle-badge">{activeFilters}</span>
+            )}
+            <svg
+              className={`sf-toggle-chevron${panelOpen ? ' sf-toggle-chevron--open' : ''}`}
+              width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
+            >
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
         </div>
 
-        <div className="sf-filters">
-          {Object.entries(FILTER_LABELS).map(([key, label]) => (
-            <div key={key} className="sf-filter-item">
-              <select
-                className="sf-select"
-                value={filters[key]}
-                onChange={e => handleFilter(key, e.target.value)}
-              >
-                <option value="">{FILTER_PLACEHOLDERS[key]}</option>
-                {(options[key] || []).map(v => (
-                  <option key={v} value={v}>{v}</option>
-                ))}
-              </select>
-            </div>
-          ))}
+        {/* Filter panel: always visible on desktop; collapsible on mobile */}
+        <div className={`sf-panel${panelOpen ? ' sf-panel--open' : ''}`}>
+          {/* Sort inside panel — mobile only */}
+          <div className="sf-sort-in-panel">
+            <select
+              className="sf-select"
+              value={sort}
+              onChange={e => onSort(e.target.value)}
+            >
+              {SORT_OPTIONS.map(o => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          </div>
 
-          {(activeFilters > 0 || search) && (
-            <button className="sf-clear-all" onClick={clearAll}>
-              Nullstill filter
-            </button>
-          )}
+          <div className="sf-filters">
+            {Object.entries(FILTER_LABELS).map(([key]) => (
+              <div key={key} className="sf-filter-item">
+                <select
+                  className="sf-select"
+                  value={filters[key]}
+                  onChange={e => handleFilter(key, e.target.value)}
+                >
+                  <option value="">{FILTER_PLACEHOLDERS[key]}</option>
+                  {(options[key] || []).map(v => (
+                    <option key={v} value={v}>{v}</option>
+                  ))}
+                </select>
+              </div>
+            ))}
+
+            {(activeFilters > 0 || search) && (
+              <button className="sf-clear-all" onClick={clearAll}>
+                Nullstill filter
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="sf-count">

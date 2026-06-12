@@ -93,6 +93,11 @@
   white-space: nowrap;
 }
 
+/* Mobile accordion toggle — hidden on desktop */
+.sf-toggle-btn {
+  display: none;
+}
+
 .sf-select {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(171, 132, 91, 0.2);
@@ -120,6 +125,17 @@
 .sf-select option {
   background: #0d1f30;
   color: var(--color-cream);
+}
+
+/* On desktop: panel always visible, sort-in-panel hidden */
+.sf-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sf-sort-in-panel {
+  display: none;
 }
 
 .sf-filters {
@@ -173,21 +189,20 @@
   color: var(--color-cream);
 }
 
+/* ── Mobile ─────────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
+  /* Remove sticky so the filter bar doesn't overlay cards */
+  .search-filter {
+    position: static;
+  }
+
   .sf-inner {
     padding: 0.75rem 1rem;
     gap: 0.5rem;
   }
 
-  /* Hele filterdelen: én kolonne */
   .sf-top {
-    flex-direction: column;
     gap: 0.5rem;
-    align-items: stretch;
-  }
-
-  .sf-search-wrap {
-    width: 100%;
   }
 
   .sf-search {
@@ -196,22 +211,85 @@
     padding: 0.65rem 2.5rem 0.65rem 2.75rem;
   }
 
-  /* Skjul "Sorter"-label, la select tale for seg */
-  .sf-sort-label {
+  /* Hide desktop sort from top row */
+  .sf-sort-wrap {
     display: none;
   }
 
-  .sf-sort-wrap {
-    width: 100%;
+  /* Show mobile toggle button */
+  .sf-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(171, 132, 91, 0.2);
+    border-radius: 2px;
+    color: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    padding: 0 0.875rem;
+    min-height: 46px;
+    letter-spacing: 0.04em;
+    transition: all var(--transition);
+    white-space: nowrap;
   }
 
-  .sf-sort-wrap .sf-select {
+  .sf-toggle-btn:active,
+  .sf-toggle-btn--open {
+    border-color: var(--color-copper);
+    color: var(--color-cream);
+    background: rgba(171, 132, 91, 0.08);
+  }
+
+  .sf-toggle-badge {
+    background: var(--color-copper);
+    color: #0B1B2B;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .sf-toggle-chevron {
+    margin-left: auto;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .sf-toggle-chevron--open {
+    transform: rotate(180deg);
+  }
+
+  /* Panel: hidden by default, shown when open */
+  .sf-panel {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.25rem;
+    border-top: 1px solid rgba(171, 132, 91, 0.1);
+  }
+
+  .sf-panel.sf-panel--open {
+    display: flex;
+  }
+
+  /* Sort inside panel: visible on mobile */
+  .sf-sort-in-panel {
+    display: block;
+  }
+
+  .sf-sort-in-panel .sf-select {
     width: 100%;
     min-height: 46px;
     font-size: 0.88rem;
   }
 
-  /* Alle filterdropdowns: én kolonne, full bredde */
   .sf-filters {
     display: flex;
     flex-direction: column;

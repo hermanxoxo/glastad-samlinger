@@ -22,8 +22,10 @@
   border: 1px solid rgba(171, 132, 91, 0.2);
   max-width: 960px;
   width: 100%;
-  max-height: 92vh;
+  max-height: 92dvh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   position: relative;
   animation: slideUp 0.25s ease;
 }
@@ -31,6 +33,13 @@
 @keyframes slideUp {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+/* On desktop: top bar has zero height, close button floats absolutely */
+.modal-top-bar {
+  height: 0;
+  overflow: visible;
+  position: relative;
 }
 
 .modal-close {
@@ -66,7 +75,7 @@
   background: #06121c;
   position: sticky;
   top: 0;
-  max-height: 92vh;
+  max-height: 92dvh;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -328,16 +337,31 @@
   }
 
   .modal {
-    max-height: 96vh;
+    max-height: 100dvh;
     border-radius: 0;
     width: 100%;
+    /* Ensure bottom content clears Safari's home indicator */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* On mobile: top bar becomes sticky header with close button */
+  .modal-top-bar {
+    height: auto;
+    overflow: visible;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #0d1f30;
+    border-bottom: 1px solid rgba(171, 132, 91, 0.12);
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 0.75rem;
   }
 
   .modal-close {
-    top: 0.75rem;
-    right: 0.75rem;
-    width: 42px;
-    height: 42px;
+    position: static;
+    width: 44px;
+    height: 44px;
   }
 
   .modal-layout {
