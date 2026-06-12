@@ -29,7 +29,7 @@ export default function ObjectCard({ object, onClick }) {
                 <line x1="56" y1="56" x2="48" y2="48" stroke="currentColor" strokeWidth="0.75"/>
                 <rect x="30" y="30" width="4" height="4" transform="rotate(45 32 32)" fill="currentColor"/>
               </svg>
-              <span className="card-placeholder-label">Ingen bilde</span>
+              <span className="card-placeholder-label">Bilde mangler</span>
             </div>
           </div>
         )}

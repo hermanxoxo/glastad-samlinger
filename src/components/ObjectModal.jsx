@@ -89,7 +89,7 @@ export default function ObjectModal({ object, onClose }) {
                   <span className="modal-placeholder-diamond"/>
                   <span className="modal-placeholder-line"/>
                 </div>
-                <p>Ingen bilde tilgjengelig</p>
+                <p>Bilde mangler</p>
               </div>
             )}
 
