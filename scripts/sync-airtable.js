@@ -22,9 +22,10 @@ const TABLE_ID = process.env.AIRTABLE_TABLE_ID || 'tblCGyvbRWfQ8wLpy'
 const VIEW     = process.env.AIRTABLE_VIEW_NAME || 'Totaloversikt'
 
 if (!TOKEN) {
-  console.error('ERROR: AIRTABLE_TOKEN environment variable is required.')
-  console.error('Set it before running: $env:AIRTABLE_TOKEN="patXXXX"; npm run sync')
-  process.exit(1)
+  console.warn('WARNING: AIRTABLE_TOKEN is not set — skipping sync.')
+  console.warn('Set it before running: $env:AIRTABLE_TOKEN="patXXXX"; npm run sync')
+  console.warn('Existing items.json will be used as-is.')
+  process.exit(0)
 }
 
 const IMAGES_DIR  = path.resolve('public/images/airtable')
