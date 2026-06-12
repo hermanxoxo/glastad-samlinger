@@ -10,14 +10,12 @@ const FILTER_LABELS = {
   typeObjekt: 'Type objekt',
   lokasjon: 'Lokasjon',
   anskaffetFra: 'Anskaffet fra',
-  eier: 'Eier',
 }
 
 const FILTER_PLACEHOLDERS = {
   typeObjekt: 'Alle type objekter',
   lokasjon: 'Alle lokasjoner',
   anskaffetFra: 'Anskaffet fra',
-  eier: 'Alle eiere',
 }
 
 export default function SearchFilter({
@@ -35,7 +33,7 @@ export default function SearchFilter({
 
   function clearAll() {
     onSearch('')
-    onFilter({ typeObjekt: '', lokasjon: '', anskaffetFra: '', eier: '' })
+    onFilter({ typeObjekt: '', lokasjon: '', anskaffetFra: '' })
   }
 
   return (

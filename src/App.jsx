@@ -14,7 +14,6 @@ export default function App() {
     typeObjekt: '',
     lokasjon: '',
     anskaffetFra: '',
-    eier: '',
   })
   const [sort, setSort] = useState('title')
   const [selectedObject, setSelectedObject] = useState(null)
@@ -25,7 +24,6 @@ export default function App() {
       typeObjekt: unique('typeObjekt'),
       lokasjon: unique('lokasjon'),
       anskaffetFra: unique('anskaffetFra'),
-      eier: unique('eier'),
     }
   }, [objects])
 
