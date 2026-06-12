@@ -2,20 +2,43 @@ import { useEffect, useState, useCallback } from 'react'
 import './ObjectModal.css'
 
 const META_FIELDS = [
-  { key: 'typeObjekt',      label: 'Type' },
-  { key: 'lokasjon',        label: 'Lokasjon' },
-  { key: 'anskaffetFra',    label: 'Anskaffet fra' },
-  { key: 'opprinnelsesdato',label: 'Opprinnelsesdato' },
-  { key: 'datoKjopt',       label: 'Dato kjøpt' },
-  { key: 'eier',            label: 'Eier' },
+  { key: 'typeObjekt',       label: 'Type' },
+  { key: 'lokasjon',         label: 'Lokasjon' },
+  { key: 'samling',          label: 'Samling' },
+  { key: 'anskaffetFra',     label: 'Anskaffet fra' },
+  { key: 'opprinnelsesdato', label: 'Opprinnelsesdato' },
+  { key: 'datoKjopt',        label: 'Dato kjøpt' },
+  { key: 'eier',             label: 'Eier' },
 ]
 
 export default function ObjectModal({ object, onClose }) {
-  const [imgError, setImgError] = useState(false)
+  // Build image list — use images[] array if available, fall back to image string
+  const images = (object.images && object.images.length > 0)
+    ? object.images
+    : (object.image ? [object.image] : [])
+
+  const [currentIdx, setCurrentIdx] = useState(0)
+  const [imgError,   setImgError]   = useState(false)
+
+  const goTo = useCallback((idx) => {
+    setCurrentIdx(idx)
+    setImgError(false)
+  }, [])
+
+  const prev = useCallback(() =>
+    goTo((currentIdx - 1 + images.length) % images.length),
+    [currentIdx, images.length, goTo]
+  )
+  const next = useCallback(() =>
+    goTo((currentIdx + 1) % images.length),
+    [currentIdx, images.length, goTo]
+  )
 
   const handleKey = useCallback(e => {
-    if (e.key === 'Escape') onClose()
-  }, [onClose])
+    if (e.key === 'Escape')     onClose()
+    if (e.key === 'ArrowLeft')  prev()
+    if (e.key === 'ArrowRight') next()
+  }, [onClose, prev, next])
 
   useEffect(() => {
     document.addEventListener('keydown', handleKey)
@@ -26,7 +49,9 @@ export default function ObjectModal({ object, onClose }) {
     }
   }, [handleKey])
 
-  const hasImg = object.hasImage && object.image && !imgError
+  const hasImg     = images.length > 0 && !imgError
+  const multiImage = images.length > 1
+  const currentSrc = hasImg ? `./${images[currentIdx]}` : null
 
   return (
     <div className="modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
@@ -38,12 +63,14 @@ export default function ObjectModal({ object, onClose }) {
         </button>
 
         <div className="modal-layout">
+          {/* ── Image panel ──────────────────────────────────────────────── */}
           <div className="modal-image-panel">
             {hasImg ? (
               <img
+                key={currentSrc}
                 className="modal-image"
-                src={`./images/${object.image}`}
-                alt={object.title}
+                src={currentSrc}
+                alt={`${object.title}${multiImage ? ` (${currentIdx + 1}/${images.length})` : ''}`}
                 onError={() => setImgError(true)}
               />
             ) : (
@@ -52,8 +79,38 @@ export default function ObjectModal({ object, onClose }) {
                 <p>Ingen bilde tilgjengelig</p>
               </div>
             )}
+
+            {/* Carousel nav — only shown when multiple images exist */}
+            {multiImage && hasImg && (
+              <>
+                <button className="carousel-btn carousel-prev" onClick={e => { e.stopPropagation(); prev() }} aria-label="Forrige bilde">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </button>
+                <button className="carousel-btn carousel-next" onClick={e => { e.stopPropagation(); next() }} aria-label="Neste bilde">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+                <div className="carousel-counter">
+                  {currentIdx + 1} / {images.length}
+                </div>
+                <div className="carousel-dots">
+                  {images.map((_, i) => (
+                    <button
+                      key={i}
+                      className={`carousel-dot${i === currentIdx ? ' active' : ''}`}
+                      onClick={e => { e.stopPropagation(); goTo(i) }}
+                      aria-label={`Bilde ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
+          {/* ── Content panel ────────────────────────────────────────────── */}
           <div className="modal-content">
             <div className="modal-header">
               {object.typeObjekt && (
@@ -93,7 +150,7 @@ export default function ObjectModal({ object, onClose }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Åpne i Airtable
+                  Mer informasjon
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
                   </svg>

@@ -12,7 +12,7 @@ export default function ObjectCard({ object, onClick }) {
         {hasImg ? (
           <img
             className="card-image"
-            src={`./images/${object.image}`}
+            src={`./${object.image}`}
             alt={object.title}
             loading="lazy"
             onError={() => setImgError(true)}
@@ -37,10 +37,10 @@ export default function ObjectCard({ object, onClick }) {
               <span className="card-meta-value">{object.lokasjon}</span>
             </span>
           )}
-          {object.datoKjopt && (
+          {object.samling && (
             <span className="card-meta-item">
-              <span className="card-meta-label">Anskaffet</span>
-              <span className="card-meta-value">{object.datoKjopt}</span>
+              <span className="card-meta-label">Samling</span>
+              <span className="card-meta-value">{object.samling}</span>
             </span>
           )}
         </div>

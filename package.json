@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --open",
-    "validate-images": "node scripts/validate-images.js"
+    "validate-images": "node scripts/validate-images.js",
+    "sync": "node scripts/sync-airtable.js"
   },
   "dependencies": {
     "react": "^18.3.1",
