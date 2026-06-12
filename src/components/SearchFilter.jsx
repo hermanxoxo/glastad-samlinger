@@ -13,6 +13,13 @@ const FILTER_LABELS = {
   eier: 'Eier',
 }
 
+const FILTER_PLACEHOLDERS = {
+  typeObjekt: 'Alle type objekter',
+  lokasjon: 'Alle lokasjoner',
+  anskaffetFra: 'Anskaffet fra',
+  eier: 'Alle eiere',
+}
+
 export default function SearchFilter({
   search, onSearch,
   filters, onFilter,
@@ -78,7 +85,7 @@ export default function SearchFilter({
                 value={filters[key]}
                 onChange={e => handleFilter(key, e.target.value)}
               >
-                <option value="">Alle {label.toLowerCase()}er</option>
+                <option value="">{FILTER_PLACEHOLDERS[key]}</option>
                 {(options[key] || []).map(v => (
                   <option key={v} value={v}>{v}</option>
                 ))}
