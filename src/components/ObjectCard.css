@@ -1,0 +1,118 @@
+.card {
+  background: #0d1f30;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition);
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover,
+.card:focus {
+  z-index: 1;
+  transform: scale(1.015);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(171, 132, 91, 0.35);
+}
+
+.card-image-wrap {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #06121c;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .card-image {
+  transform: scale(1.05);
+}
+
+.card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(6, 15, 24, 0.9) 100%);
+  pointer-events: none;
+}
+
+.card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a1825 0%, #0f2030 100%);
+}
+
+.card-placeholder-icon {
+  font-size: 3rem;
+  color: rgba(171, 132, 91, 0.2);
+}
+
+.card-type-badge {
+  position: absolute;
+  top: 0.875rem;
+  left: 0.875rem;
+  background: rgba(11, 27, 43, 0.85);
+  border: 1px solid rgba(171, 132, 91, 0.3);
+  color: var(--color-muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  backdrop-filter: blur(4px);
+}
+
+.card-body {
+  padding: 1rem;
+  flex: 1;
+  border-top: 1px solid rgba(171, 132, 91, 0.1);
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--color-cream);
+  line-height: 1.3;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.02em;
+}
+
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.card-meta-item {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+}
+
+.card-meta-label {
+  color: var(--color-copper);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.card-meta-value {
+  color: var(--color-muted);
+}
+
+@media (max-width: 640px) {
+  .card-body {
+    padding: 0.75rem;
+  }
+  .card-title {
+    font-size: 0.9rem;
+  }
+}
