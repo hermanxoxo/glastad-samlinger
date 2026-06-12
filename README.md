@@ -1,43 +1,80 @@
-# Glastad Samlinger — Digital Samlingskatalog
+# Glastad Samlinger
 
-En lokal POC-nettside for Glastad Samlinger. Viser objekter fra en Airtable CSV-eksport som en elegant digital samlingskatalog.
+Statisk React/Vite-nettside for Glastads samlinger. Viser objekter fra Airtable med bilder, søk, filtrering, sortering og detaljvisning (modal). Publisert på GitHub Pages via GitHub Actions.
 
-## Forutsetninger
+**URL:** https://hermanxoxo.github.io/glastad-samlinger/
 
-- [Node.js](https://nodejs.org/) v18 eller nyere
-- npm (følger med Node.js)
+---
 
-## Kom i gang
+## Teknisk stack
 
-### 1. Installer avhengigheter
+| Komponent | Teknologi |
+|---|---|
+| Frontend | React 18 + Vite 5 |
+| Hosting | GitHub Pages |
+| CI/CD | GitHub Actions |
+| Datakilde | Airtable REST API (kun under bygg) |
+| Fonter | Google Fonts – Cormorant Garamond + Lato |
 
-```bash
-npm install
+---
+
+## Dataflyt
+
+```
+Airtable
+   ↓  (GitHub Actions kjører sync-airtable.js ved push til main)
+public/data/items.json  +  public/images/airtable/
+   ↓  (Vite bygger React-appen)
+dist/
+   ↓  (GitHub Actions deployer til GitHub Pages)
+https://hermanxoxo.github.io/glastad-samlinger/
 ```
 
-### 2. Kjør lokalt
+**Viktig:**
+- Siden gjør **ingen** API-kall fra nettleseren — all data er bakt inn under bygg.
+- Airtable-token eksponeres **aldri** i frontend-bunndelen.
+- Airtable brukes utelukkende **read-only** via `GET`-kall i GitHub Actions.
+
+---
+
+## GitHub Secrets
+
+Følgende secrets må være satt i repoets **Settings → Secrets → Actions**:
+
+| Secret | Beskrivelse |
+|---|---|
+| `AIRTABLE_TOKEN` | Personal Access Token fra Airtable |
+| `AIRTABLE_BASE_ID` | ID til Airtable-basen (starter med `app`) |
+| `AIRTABLE_TABLE_ID` | ID til tabellen (starter med `tbl`) |
+| `AIRTABLE_VIEW_NAME` | Navn på visningen som skal synkroniseres |
+
+> **Ikke commit token eller andre hemmeligheter til repoet.**
+
+---
+
+## Kommandoer lokalt
 
 ```bash
-npm run dev
+npm install          # Installer avhengigheter
+
+npm run sync         # Hent data fra Airtable og lagre items.json + bilder
+                     # Krever at AIRTABLE_TOKEN m.fl. er satt som miljøvariabler
+                     # Hopper over uten feil hvis token mangler
+
+npm run build        # Bygg produksjonsversjon til dist/
+
+npm run dev          # Start lokal utviklingsserver (http://localhost:5173)
+                     # Uten sync vises ingen objekter (items.json er tom)
 ```
 
-Åpne nettleseren på `http://localhost:5173`
+---
 
-### 3. Valider bildematch
+## Deploy
 
-```bash
-npm run validate-images
-```
-
-Scriptet analyserer CSV-filen og bildemappen, genererer en matchingrapport under `public/data/`, og oppdaterer `objects.json`.
-
-### 4. Bygg for produksjon
-
-```bash
-npm run build
-```
-
-Bygget havner i `dist/`-mappen og er klar for GitHub Pages eller annen statisk hosting.
+- Deploy skjer **automatisk** ved push til `main`-branchen.
+- Workflow kan også **kjøres manuelt** fra GitHub Actions-fanen i repoet.
+- GitHub Pages publiserer ferdig bygg direkte fra Actions-artefakt.
+- Airtable-data oppdateres ved hver workflow-kjøring (også satt til kjøre én gang i timen via cron).
 
 ---
 
@@ -45,13 +82,20 @@ Bygget havner i `dist/`-mappen og er klar for GitHub Pages eller annen statisk h
 
 ```
 .
+├── .github/
+│   └── workflows/
+│       └── deploy.yml          ← GitHub Actions: sync → build → deploy
 ├── public/
-│   ├── images/              ← alle bilder (101 stk)
 │   ├── data/
-│   │   ├── objects.json         ← pre-prosessert datastruktur
-│   │   ├── image-match-report.json
-│   │   └── image-match-report.csv
-│   └── Gladstad-Logo.webp
+│   │   └── items.json          ← Genereres av sync-airtable.js (tom i git)
+│   ├── images/
+│   │   └── airtable/           ← Bilder lastet ned under bygg (gitignorert)
+│   ├── Gladstad-Logo.webp
+│   ├── favicon.ico
+│   ├── favicon-32x32.png
+│   └── apple-touch-icon.png
+├── scripts/
+│   └── sync-airtable.js        ← Henter data fra Airtable, lagrer items.json + bilder
 ├── src/
 │   ├── components/
 │   │   ├── Header.jsx / .css
@@ -62,54 +106,17 @@ Bygget havner i `dist/`-mappen og er klar for GitHub Pages eller annen statisk h
 │   ├── App.jsx / .css
 │   ├── index.css
 │   └── main.jsx
-├── scripts/
-│   └── validate-images.js   ← bildevalideringsscript
-├── Objekter-Totaloversikt.csv
 ├── index.html
-├── package.json
 ├── vite.config.js
-└── README.md
+└── package.json
 ```
 
-## Bildematch
+---
 
-Bildene ble matchet mot CSV-rader ved hjelp av **posisjonell matching etter nedlastingstidspunkt**:
+## Viktige merknader
 
-- Alle 101 bildefiler er navngitt med kryptiske base64url-strenger (Airtable-internt hash)
-- Filene ble lastet ned sekvensielt (ca. 8 sekunder mellom hvert bilde)
-- CSV-radene med bilder ble matchet posisjonelt mot bildene sortert etter modifikasjonstid
-- **Verifisert**: `GXJ2JLhwuMvi7tNhSzuFdhCvW3lrlBTK82Qe7TTbpD8.jpg` (eneste JPG-fil) matcher Ruth Krefting-raden (eneste rad med `image.jpeg`)
-
-### Matchingrapport
-
-| Kategori                | Antall |
-|-------------------------|--------|
-| Totalt antall rader     | 104–105 |
-| Rader MED bilde         | 100–101 |
-| Rader UTEN bilde        | 4       |
-| Ubrukte bildefiler      | 0       |
-
-Rader uten bilde vises med plassholder i nettleseren:
-- Innrammet bilde (rec4IaETMNl28ihZL)
-- Speil (recHGOAw56djQ9C6X)
-- Vintage bilde (recgw7UlzLmZw0nwM)
-- Nattbord (rectE3CDhBVzY8mAi)
-
-## GitHub Pages
-
-For å publisere på GitHub Pages:
-
-1. Lag et nytt GitHub-repository
-2. Sett riktig `base`-verdi i `vite.config.js`:
-   ```js
-   base: '/REPO-NAVN/'
-   ```
-3. Kjør `npm run build`
-4. Push `dist/`-innholdet til `gh-pages`-branchen
-
-## Teknologi
-
-- React 18
-- Vite 5
-- Cormorant Garamond + Lato (Google Fonts)
-- Ingen backend, ingen API, ingen tokens
+- `public/data/items.json` er tom i git og **genereres av sync** ved hvert bygg. Ikke rediger den manuelt.
+- `public/images/airtable/` er gitignorert og fylles under bygg av GitHub Actions.
+- Endringer i Airtable blir synlige på siden **etter neste workflow-kjøring** (automatisk hver time, eller utløst manuelt).
+- Ikke slett `scripts/sync-airtable.js`, Airtable-oppsett i GitHub Secrets eller `.github/workflows/deploy.yml` uten å forstå konsekvensen — disse er kritiske for dataflyten.
+- Gamle CSV-importfiler (`objects.json`, `validate-images.js`, bildefiler med kryptiske navn) er fjernet. All data kommer nå fra Airtable.
