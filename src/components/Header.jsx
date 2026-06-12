@@ -16,7 +16,7 @@ export default function Header() {
           <span className="ornament-diamond" />
           <span className="ornament-line" />
         </div>
-        <p className="header-title">Glastads kunst- og gjenstandssamlinger</p>
+        <p className="header-title">Glastads samlinger</p>
       </div>
     </header>
   )
