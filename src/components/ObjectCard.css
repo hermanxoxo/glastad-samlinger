@@ -31,7 +31,6 @@
   height: 100%;
   object-fit: contain;
   transition: transform 0.5s ease;
-  padding: 0.25rem;
 }
 
 .card:hover .card-image {
@@ -41,7 +40,7 @@
 .card-image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 65%, rgba(6, 15, 24, 0.6) 100%);
+  background: linear-gradient(180deg, transparent 70%, rgba(6, 15, 24, 0.5) 100%);
   pointer-events: none;
 }
 
@@ -59,22 +58,25 @@
   color: rgba(171, 132, 91, 0.2);
 }
 
+/* Badge langs bunnen av bildefeltet – konsekvent og ikke-forstyrrende */
 .card-type-badge {
   position: absolute;
-  top: 0.875rem;
-  left: 0.875rem;
-  background: rgba(11, 27, 43, 0.85);
-  border: 1px solid rgba(171, 132, 91, 0.3);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(6, 15, 24, 0.82);
+  border-top: 1px solid rgba(171, 132, 91, 0.2);
   color: var(--color-muted);
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 0.25rem 0.6rem;
+  padding: 0.3rem 0.75rem;
+  text-align: center;
   backdrop-filter: blur(4px);
 }
 
 .card-body {
-  padding: 1rem;
+  padding: 0.875rem 1rem;
   flex: 1;
   border-top: 1px solid rgba(171, 132, 91, 0.1);
 }
@@ -85,7 +87,7 @@
   font-size: 1rem;
   color: var(--color-cream);
   line-height: 1.3;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
   letter-spacing: 0.02em;
 }
 
@@ -113,14 +115,23 @@
 }
 
 @media (max-width: 640px) {
-  .card-body {
-    padding: 0.6rem 0.75rem;
+  /* Enkeltkolonne: lavere bildeflate for å unngå for mye tomrom */
+  .card-image-wrap {
+    aspect-ratio: unset;
+    height: 56vw;
+    max-height: 280px;
   }
+
+  .card-body {
+    padding: 0.75rem 0.875rem;
+  }
+
   .card-title {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     margin-bottom: 0.4rem;
   }
+
   .card-meta-item {
-    font-size: 0.68rem;
+    font-size: 0.7rem;
   }
 }
