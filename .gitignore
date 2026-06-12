@@ -3,5 +3,5 @@ dist
 .DS_Store
 *.local
 
-# Airtable-bilder generert under bygg – ikke commit
-public/images/airtable/
+# Bilder generert under bygg – ikke commit
+public/images/
