@@ -5,3 +5,6 @@ dist
 
 # Bilder generert under bygg – ikke commit
 public/images/
+
+# Kildebilde for favicon (lokalt verktøy, ikke del av appen)
+Glastad_logo_Icon.jpg
