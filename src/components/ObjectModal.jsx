@@ -75,7 +75,20 @@ export default function ObjectModal({ object, onClose }) {
               />
             ) : (
               <div className="modal-placeholder">
-                <span className="modal-placeholder-icon">◇</span>
+                <svg className="modal-placeholder-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="8" y="8" width="64" height="64" rx="1" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4"/>
+                  <rect x="18" y="18" width="44" height="44" rx="1" stroke="currentColor" strokeWidth="0.75"/>
+                  <line x1="8" y1="8" x2="18" y2="18" stroke="currentColor" strokeWidth="0.75"/>
+                  <line x1="72" y1="8" x2="62" y2="18" stroke="currentColor" strokeWidth="0.75"/>
+                  <line x1="8" y1="72" x2="18" y2="62" stroke="currentColor" strokeWidth="0.75"/>
+                  <line x1="72" y1="72" x2="62" y2="62" stroke="currentColor" strokeWidth="0.75"/>
+                  <rect x="37" y="37" width="6" height="6" transform="rotate(45 40 40)" fill="currentColor"/>
+                </svg>
+                <div className="modal-placeholder-ornament">
+                  <span className="modal-placeholder-line"/>
+                  <span className="modal-placeholder-diamond"/>
+                  <span className="modal-placeholder-line"/>
+                </div>
                 <p>Ingen bilde tilgjengelig</p>
               </div>
             )}

@@ -159,18 +159,42 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  background: linear-gradient(135deg, #08161f, #0d1f30);
+  background: linear-gradient(160deg, #080f18 0%, #0d1e2e 100%);
 }
 
 .modal-placeholder-icon {
-  font-size: 4rem;
-  color: rgba(171, 132, 91, 0.2);
+  width: 72px;
+  height: 72px;
+  color: rgba(171, 132, 91, 0.22);
+}
+
+.modal-placeholder-ornament {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0;
+}
+
+.modal-placeholder-line {
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: rgba(171, 132, 91, 0.2);
+}
+
+.modal-placeholder-diamond {
+  display: block;
+  width: 5px;
+  height: 5px;
+  background: rgba(171, 132, 91, 0.3);
+  transform: rotate(45deg);
+  flex-shrink: 0;
 }
 
 .modal-placeholder p {
-  font-size: 0.8rem;
-  color: var(--color-muted);
-  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  color: rgba(192, 184, 168, 0.4);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
