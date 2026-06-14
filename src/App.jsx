@@ -39,7 +39,6 @@ export default function App() {
     typeObjekt: '',
     lokasjon:   '',
     anskaffetFra: '',
-    samling:    '',
   })
   const [sort, setSort]               = useState('title')
   const [selectedObject, setSelectedObject] = useState(null)
@@ -51,7 +50,6 @@ export default function App() {
       typeObjekt:   unique('typeObjekt'),
       lokasjon:     unique('lokasjon'),
       anskaffetFra: unique('anskaffetFra'),
-      samling:      unique('samling'),
     }
   }, [objects])
 

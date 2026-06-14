@@ -11,14 +11,12 @@ const FILTER_LABELS = {
   typeObjekt:   'Type objekt',
   lokasjon:     'Lokasjon',
   anskaffetFra: 'Anskaffet fra',
-  samling:      'Samling',
 }
 
 const FILTER_PLACEHOLDERS = {
   typeObjekt:   'Alle type objekter',
   lokasjon:     'Alle lokasjoner',
   anskaffetFra: 'Anskaffet fra',
-  samling:      'Alle samlinger',
 }
 
 export default function SearchFilter({
@@ -37,7 +35,7 @@ export default function SearchFilter({
 
   function clearAll() {
     onSearch('')
-    onFilter({ typeObjekt: '', lokasjon: '', anskaffetFra: '', samling: '' })
+    onFilter({ typeObjekt: '', lokasjon: '', anskaffetFra: '' })
   }
 
   return (
