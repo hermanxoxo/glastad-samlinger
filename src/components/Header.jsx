@@ -4,19 +4,19 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-inner">
-        <div className="header-logo-wrap">
+        <div className="logo-brand">
           <img
             src="./Gladstad-Logo.png"
             alt="Glastad Samlinger"
-            className="header-logo"
+            className="logo-mark"
           />
+          <div className="logo-divider">
+            <span className="ornament-line" />
+            <span className="ornament-diamond" />
+            <span className="ornament-line" />
+          </div>
+          <p className="logo-text">Glastads samlinger</p>
         </div>
-        <div className="header-ornament">
-          <span className="ornament-line" />
-          <span className="ornament-diamond" />
-          <span className="ornament-line" />
-        </div>
-        <p className="header-title">Glastads samlinger</p>
       </div>
     </header>
   )
