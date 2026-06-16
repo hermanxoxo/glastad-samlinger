@@ -6,7 +6,7 @@ export default function Header() {
       <div className="header-inner">
         <div className="header-logo-wrap">
           <img
-            src="./Gladstad-Logo.webp"
+            src="./Gladstad-Logo.png"
             alt="Glastad Samlinger"
             className="header-logo"
           />
